@@ -1,6 +1,6 @@
 # 📚 Book Finder
 
-A Flutter app for discovering books and managing a personal reading list.
+A Flutter app for discovering books and managing a personal reading list. Built as final project for TAC 368 Cross Platform Application Development.
 
 
 ## Features
