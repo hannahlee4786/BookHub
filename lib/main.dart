@@ -10,11 +10,11 @@ import 'theme.dart';
 
 Future<void> main() async { // async/await to load API key
   await dotenv.load(fileName: '.env');
-  runApp(const BookFinderApp());
+  runApp(const BookHubApp());
 }
 
-class BookFinderApp extends StatelessWidget {
-  const BookFinderApp({super.key});
+class BookHubApp extends StatelessWidget {
+  const BookHubApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class BookFinderApp extends StatelessWidget {
           BlocProvider(create: (ctx) => ReadingListCubit(ctx.read<ReadingListRepository>())),
         ],
         child: MaterialApp(
-          title: 'Book Finder',
+          title: 'BookHub',
           debugShowCheckedModeBanner: false,
           theme: buildAppTheme(), // Whole app shares theme/styling
           home: const SearchScreen(),

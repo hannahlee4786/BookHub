@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Book Finder'),
+        title: const Text('BookHub'),
         actions: [
           BlocBuilder<ReadingListCubit, ReadingListState>(
             builder: (context, state) {
