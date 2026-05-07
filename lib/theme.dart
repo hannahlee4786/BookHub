@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Define reusable colors
 class AppColors {
   static const butterscotch         = Color(0xFFFCEACA);
   static const strawberryMilkshake  = Color(0xFFFBD9CD);
@@ -17,6 +18,7 @@ class AppColors {
   static const divider      = Color(0xFFE8C9B8);
 }
 
+// Creates the app-wide Flutter theme applied once initialized in main.dart
 ThemeData buildAppTheme() {
   final base = ThemeData.light();
   return base.copyWith(

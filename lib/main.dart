@@ -8,7 +8,7 @@ import 'models/reading_list_repository.dart';
 import 'screens/search_screen.dart';
 import 'theme.dart';
 
-Future<void> main() async {
+Future<void> main() async { // async/await to load API key
   await dotenv.load(fileName: '.env');
   runApp(const BookFinderApp());
 }
@@ -19,11 +19,11 @@ class BookFinderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [
+      providers: [ // App shares same instance of services
         RepositoryProvider(create: (_) => BookApiService()),
         RepositoryProvider(create: (_) => ReadingListRepository()),
       ],
-      child: MultiBlocProvider(
+      child: MultiBlocProvider( // Shared Cubits/state
         providers: [
           BlocProvider(create: (ctx) => SearchCubit(ctx.read<BookApiService>())),
           BlocProvider(create: (ctx) => ReadingListCubit(ctx.read<ReadingListRepository>())),
@@ -31,7 +31,7 @@ class BookFinderApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Book Finder',
           debugShowCheckedModeBanner: false,
-          theme: buildAppTheme(),
+          theme: buildAppTheme(), // Whole app shares theme/styling
           home: const SearchScreen(),
         ),
       ),

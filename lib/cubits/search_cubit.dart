@@ -5,21 +5,26 @@ import '../models/book_api_service.dart';
 // State
 abstract class SearchState {}
 
+// No search (initial) state
 class SearchInitial extends SearchState {}
 
+// Loading search state when user searches
 class SearchLoading extends SearchState {}
 
+// Search state when user searches
 class SearchSuccess extends SearchState {
   final List<Book> results;
   final String query;
   SearchSuccess(this.results, this.query);
 }
 
+// Search state with nothing found after user searches
 class SearchEmpty extends SearchState {
   final String query;
   SearchEmpty(this.query);
 }
 
+// Failure to search state
 class SearchError extends SearchState {
   final String message;
   SearchError(this.message);
@@ -52,5 +57,6 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
+  // Clearing search
   void reset() => emit(SearchInitial());
 }

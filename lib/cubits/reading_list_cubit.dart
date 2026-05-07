@@ -24,7 +24,7 @@ class ReadingListState {
   int get readCount   => books.where((b) => b.isRead).length;
   int get unreadCount => books.where((b) => !b.isRead).length;
 
-  // So screens can call state.containsBook(id)
+  // So screens can call state.containsBook(id) -> prevents duplicate books
   bool containsBook(String bookId) => books.any((b) => b.id == bookId);
 }
 
