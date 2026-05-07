@@ -1,0 +1,56 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/book.dart';
+import '../models/book_api_service.dart';
+
+// State
+abstract class SearchState {}
+
+class SearchInitial extends SearchState {}
+
+class SearchLoading extends SearchState {}
+
+class SearchSuccess extends SearchState {
+  final List<Book> results;
+  final String query;
+  SearchSuccess(this.results, this.query);
+}
+
+class SearchEmpty extends SearchState {
+  final String query;
+  SearchEmpty(this.query);
+}
+
+class SearchError extends SearchState {
+  final String message;
+  SearchError(this.message);
+}
+
+// Cubit
+class SearchCubit extends Cubit<SearchState> {
+  final BookApiService _api;
+
+  SearchCubit(this._api) : super(SearchInitial());
+
+  Future<void> search(String query) async {
+    if (query.trim().isEmpty) {
+      emit(SearchInitial());
+      return;
+    }
+    emit(SearchLoading());
+    try {
+      final results = await _api.searchBooks(query);
+      if (results.isEmpty) {
+        emit(SearchEmpty(query));
+      } else {
+        emit(SearchSuccess(results, query));
+      }
+    } catch (e) {
+      final msg = e.toString().contains('API key')
+          ? 'API key required. See book_api_service.dart for instructions.'
+          : 'Could not load results. Check your connection.\n\nError: $e';
+      emit(SearchError(msg));
+    }
+  }
+
+  void reset() => emit(SearchInitial());
+}
