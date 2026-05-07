@@ -11,6 +11,7 @@ class Book {
   final List<String> categories;
   final String? previewLink;
   bool isRead;
+  DateTime? dateRead;
 
   Book({
     required this.id,
@@ -23,6 +24,7 @@ class Book {
     this.categories = const [],
     this.previewLink,
     this.isRead = false,
+    this.dateRead,
   });
 
   // Construct from Google Books API JSON
@@ -68,6 +70,7 @@ class Book {
         'categories': categories,
         'previewLink': previewLink,
         'isRead': isRead,
+        'dateRead': dateRead?.toIso8601String(),
       };
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
@@ -78,15 +81,20 @@ class Book {
         thumbnailUrl: json['thumbnailUrl'] as String?,
         publishedDate: json['publishedDate'] as String?,
         pageCount: json['pageCount'] as int?,
-        categories:
-            (json['categories'] as List<dynamic>?)?.map((c) => c.toString()).toList() ?? [],
+        categories: (json['categories'] as List<dynamic>?)
+                ?.map((c) => c.toString())
+                .toList() ??
+            [],
         previewLink: json['previewLink'] as String?,
         isRead: json['isRead'] as bool? ?? false,
+        dateRead: json['dateRead'] != null // ← new
+            ? DateTime.parse(json['dateRead'] as String)
+            : null,
       );
 
   String toJsonString() => jsonEncode(toJson());
 
-  Book copyWith({bool? isRead}) => Book(
+  Book copyWith({bool? isRead, DateTime? dateRead, bool clearDateRead = false}) => Book(
         id: id,
         title: title,
         authors: authors,
@@ -97,6 +105,7 @@ class Book {
         categories: categories,
         previewLink: previewLink,
         isRead: isRead ?? this.isRead,
+        dateRead: clearDateRead ? null : (dateRead ?? this.dateRead),
       );
 
   String get authorsDisplay => authors.join(', ');
@@ -104,5 +113,14 @@ class Book {
   String get yearDisplay {
     if (publishedDate == null || publishedDate!.isEmpty) return '';
     return publishedDate!.length >= 4 ? publishedDate!.substring(0, 4) : publishedDate!;
+  }
+
+  String get dateReadDisplay {
+    if (dateRead == null) return '';
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${months[dateRead!.month - 1]} ${dateRead!.day}, ${dateRead!.year}';
   }
 }

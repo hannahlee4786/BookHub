@@ -59,7 +59,14 @@ class ReadingListCubit extends Cubit<ReadingListState> {
   Future<void> toggleRead(String bookId) async {
     await _repo.toggleRead(bookId);
     final updated = state.books.map((b) {
-      return b.id == bookId ? b.copyWith(isRead: !b.isRead) : b;
+      if (b.id != bookId) return b;
+      if (b.isRead) {
+        // unmark read -> clear date
+        return b.copyWith(isRead: false, clearDateRead: true);
+      } else {
+        // mark read -> record today
+        return b.copyWith(isRead: true, dateRead: DateTime.now());
+      }
     }).toList();
     emit(state.copyWith(books: updated));
   }

@@ -15,8 +15,7 @@ class ReadingListRepository {
 
   Future<void> saveReadingList(List<Book> books) async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = books.map((b) => b.toJsonString()).toList();
-    await prefs.setStringList(_key, raw);
+    await prefs.setStringList(_key, books.map((b) => b.toJsonString()).toList());
   }
 
   Future<void> addBook(Book book) async {
@@ -33,17 +32,20 @@ class ReadingListRepository {
     await saveReadingList(list);
   }
 
+  // Stores the date when marking read, clears it when marking unread
   Future<void> toggleRead(String bookId) async {
     final list = await loadReadingList();
     final index = list.indexWhere((b) => b.id == bookId);
     if (index != -1) {
-      list[index] = list[index].copyWith(isRead: !list[index].isRead);
+      final book = list[index];
+      if (book.isRead) {
+        // marking unread → clear date
+        list[index] = book.copyWith(isRead: false, clearDateRead: true);
+      } else {
+        // marking read → record today
+        list[index] = book.copyWith(isRead: true, dateRead: DateTime.now());
+      }
       await saveReadingList(list);
     }
-  }
-
-  Future<bool> isInReadingList(String bookId) async {
-    final list = await loadReadingList();
-    return list.any((b) => b.id == bookId);
   }
 }

@@ -30,7 +30,7 @@ class BookListTile extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cover
+              // Cover with optional read badge
               Stack(
                 children: [
                   BookCoverWidget(thumbnailUrl: book.thumbnailUrl),
@@ -57,22 +57,36 @@ class BookListTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      book.title,
-                      style: tt.titleMedium,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Text(book.title,
+                        style: tt.titleMedium,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 4),
-                    Text(
-                      book.authorsDisplay,
-                      style: tt.bodySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Text(book.authorsDisplay,
+                        style: tt.bodySmall,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
                     if (book.yearDisplay.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(book.yearDisplay, style: tt.bodySmall),
+                    ],
+                    // If read, shows when book is read
+                    if (showReadBadge && book.isRead && book.dateRead != null) ...[
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_today_rounded,
+                              size: 11, color: AppColors.goldenGoose),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Read on ${book.dateReadDisplay}',
+                            style: tt.bodySmall?.copyWith(
+                              color: AppColors.goldenGoose,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                     if (book.categories.isNotEmpty) ...[
                       const SizedBox(height: 8),
