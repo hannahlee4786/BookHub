@@ -42,3 +42,7 @@ A Flutter app for discovering books and managing a personal reading list. Built 
    flutter run
    ```
 
+## Tech Stack
+ 
+- **Dart**
+- **Flutter**
