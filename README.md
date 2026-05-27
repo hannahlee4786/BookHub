@@ -1,4 +1,4 @@
-# 📚 Book Finder
+# 📚 BookHub
 
 A Flutter app for discovering books and managing a personal reading list. Built as final project for TAC 368 Cross Platform Application Development.
 
@@ -46,3 +46,4 @@ A Flutter app for discovering books and managing a personal reading list. Built 
  
 - **Dart**
 - **Flutter**
+- **Google Books API**
